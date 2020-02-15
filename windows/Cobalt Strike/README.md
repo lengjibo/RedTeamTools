@@ -11,3 +11,5 @@ Some commands of mimikatz are integrated into a plug-in with other password grab
 [Internal-Monologue](https://github.com/eladshamir/Internal-Monologue)
 [LaZagne](https://github.com/AlessandroZ/LaZagne)
 [navicatpwd](https://github.com/pxss/navicatpwd)
+[RdpThief](https://github.com/0x09AL/RdpThief/)
+[SharpDecryptPwd](https://github.com/uknowsec/SharpDecryptPwd)
