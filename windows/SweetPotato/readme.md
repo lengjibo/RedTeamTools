@@ -1,4 +1,6 @@
-对https://github.com/CCob/SweetPotato进行修改，使其可以直接上线一个system的session。
+对https://github.com/CCob/SweetPotato
+
+进行修改，使其可以直接上线一个system的session。
 
 效果图：
 
