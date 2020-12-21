@@ -1,0 +1,8 @@
+﻿  CredSSP.cpp
+CredSSP.cpp(53): warning C4312: “类型转换”: 从“DWORD”转换到更大的“LPSTR”
+CredSSP.cpp(62): warning C4129: “m”: 不可识别的字符转义序列
+  正在生成代码
+  All 73 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  CredSSP.vcxproj -> D:\protect\CredSSP\x64\Release\CredSSP.exe
+  CredSSP.vcxproj -> D:\protect\CredSSP\x64\Release\CredSSP.pdb (Full PDB)
