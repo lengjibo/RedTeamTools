@@ -1,0 +1,11 @@
+﻿  MiniCurl.cpp
+D:\protect\MiniProject\MiniProject\MiniCurl.cpp(15,1): warning C4005: “_WIN32_WINNT”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\sdkddkver.h(217): message : 参见“_WIN32_WINNT”的前一个定义
+D:\protect\MiniProject\MiniProject\MiniCurl.cpp(221,32): warning C4101: “e”: 未引用的局部变量
+LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
+  正在生成代码
+  Previous IPDB not found, fall back to full compilation.
+D:\protect\MiniProject\MiniProject\MiniCurl.cpp(142): warning C4715: “GetPID”: 不是所有的控件路径都返回值
+  All 110 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  MiniProject.vcxproj -> D:\protect\MiniProject\x64\Release\MiniProject.exe
