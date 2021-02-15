@@ -1,0 +1,8 @@
+﻿  CRTinjection.cpp
+CRTinjection.cpp(17): warning C4101: “hr”: 未引用的局部变量
+  process.cpp
+  正在生成代码
+  All 9 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  CreateRemoteThreadTest.vcxproj -> D:\protect\CreateRemoteThreadTest\x64\Release\CreateRemoteThreadTest.exe
+  CreateRemoteThreadTest.vcxproj -> D:\protect\CreateRemoteThreadTest\x64\Release\CreateRemoteThreadTest.pdb (Full PDB)
